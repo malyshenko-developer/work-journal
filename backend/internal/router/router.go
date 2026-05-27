@@ -2,6 +2,7 @@ package router
 
 import (
 	"net/http"
+	"work-journal/backend/internal/handlers"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -19,6 +20,8 @@ func Setup() *gin.Engine {
 	api := r.Group("/api")
 	{
 		api.GET("/health", healthHandler)
+		api.GET("/work-types", handlers.GetWorkTypes)
+		api.GET("/logs", handlers.GetWorkLogs)
 	}
 
 	return r
