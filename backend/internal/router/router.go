@@ -24,6 +24,7 @@ func Setup() *gin.Engine {
 		api.GET("/logs", handlers.GetWorkLogs)
 		api.POST("/logs", handlers.CreateWorkLog)
 		api.PUT("/logs/:id", handlers.UpdateWorkLog)
+		api.DELETE("/logs/:id", handlers.DeleteWorkLog)
 	}
 
 	return r

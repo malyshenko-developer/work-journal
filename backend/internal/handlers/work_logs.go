@@ -115,3 +115,24 @@ func UpdateWorkLog(c *gin.Context) {
 
 	c.JSON(http.StatusOK, workLog)
 }
+
+func DeleteWorkLog(c *gin.Context) {
+	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid work log ID"})
+		return
+	}
+
+	var workLog models.WorkLog
+	if err := database.DB.First(&workLog, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Work log not found"})
+		return
+	}
+
+	if err := database.DB.Delete(&workLog).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete work log"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted work log"})
+}
