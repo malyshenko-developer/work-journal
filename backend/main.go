@@ -2,10 +2,9 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"work-journal/backend/internal/database"
+	"work-journal/backend/internal/router"
 
-	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
@@ -17,11 +16,7 @@ func main() {
 	database.Connect()
 	database.RunMigrations()
 
-	r := gin.Default()
-
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"status": "ok"})
-	})
+	r := router.Setup()
 
 	log.Println("Starting server on :8080")
 	if err := r.Run(":8080"); err != nil {
