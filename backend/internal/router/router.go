@@ -22,6 +22,7 @@ func Setup() *gin.Engine {
 		api.GET("/health", healthHandler)
 		api.GET("/work-types", handlers.GetWorkTypes)
 		api.GET("/logs", handlers.GetWorkLogs)
+		api.POST("/logs", handlers.CreateWorkLog)
 	}
 
 	return r
