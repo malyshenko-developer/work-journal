@@ -11,11 +11,11 @@ import (
 )
 
 type WorkLogInput struct {
-	Date       string `json:"date" binding:"required"`
-	WorkTypeID uint   `json:"work_type_id" binding:"required"`
-	Volume     float64
-	Unit       string `json:"unit" binding:"required"`
-	Executor   string `json:"executor" binding:"required"`
+	Date       string  `json:"date" binding:"required"`
+	WorkTypeID uint    `json:"work_type_id" binding:"required"`
+	Volume     float64 `json:"volume" binding:"required"`
+	Unit       string  `json:"unit" binding:"required"`
+	Executor   string  `json:"executor" binding:"required"`
 }
 
 func GetWorkLogs(c *gin.Context) {
