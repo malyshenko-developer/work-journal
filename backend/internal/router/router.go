@@ -23,6 +23,7 @@ func Setup() *gin.Engine {
 		api.GET("/work-types", handlers.GetWorkTypes)
 		api.GET("/logs", handlers.GetWorkLogs)
 		api.POST("/logs", handlers.CreateWorkLog)
+		api.PUT("/logs/:id", handlers.UpdateWorkLog)
 	}
 
 	return r
