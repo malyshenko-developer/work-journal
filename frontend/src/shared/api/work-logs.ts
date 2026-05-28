@@ -3,7 +3,10 @@ import type { WorkLog, WorkLogInput } from './types'
 
 export const workLogsApi = {
     getAll: (params?: { date_from?: string; date_to?: string; order?: string }) => {
-        const query = new URLSearchParams(params as Record<string, string>).toString()
+        const filteredParams = Object.fromEntries(
+            Object.entries(params ?? {}).filter(([, v]) => v !== undefined && v !== '')
+        )
+        const query = new URLSearchParams(filteredParams).toString()
         return apiClient<WorkLog[]>(`/logs${query ? `?${query}` : ''}`)
     },
 
