@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+
 import { workLogsApi } from '@/shared/api/work-logs'
 import type { WorkLog } from '@/shared/api/types'
 import {
@@ -9,6 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/shared/ui/table'
+import {DeleteWorkLogButton} from "@/features/delete-work-log";
 
 interface WorkLogsTableProps {
     dateFrom?: string
@@ -48,7 +50,9 @@ export function WorkLogsTable({ dateFrom, dateTo, order }: WorkLogsTableProps) {
                         <TableCell>{log.work_type.name}</TableCell>
                         <TableCell>{log.volume} {log.unit}</TableCell>
                         <TableCell>{log.executor}</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell className="text-right">
+                            <DeleteWorkLogButton id={log.id} />
+                        </TableCell>
                     </TableRow>
                 ))}
             </TableBody>
