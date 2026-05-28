@@ -1,7 +1,9 @@
 import {useState} from "react";
 
 import {WorkLogsTable} from "@/widgets/work-logs-table";
+
 import {FilterWorkLogs} from "@/features/filter-work-logs";
+import {CreateWorkLogDialog} from "@/features/create-work-log";
 
 function App() {
     const [dateFrom, setDateFrom] = useState('')
@@ -17,7 +19,10 @@ function App() {
 
     return (
         <div className="container mx-auto py-8">
-            <h1 className="text-2xl font-semibold mb-6">Журнал работ</h1>
+            <div className="flex items-center justify-between mb-6">
+                <h1 className="text-2xl font-semibold">Журнал работ</h1>
+                <CreateWorkLogDialog />
+            </div>
             <FilterWorkLogs
                 dateFrom={dateFrom}
                 dateTo={dateTo}
