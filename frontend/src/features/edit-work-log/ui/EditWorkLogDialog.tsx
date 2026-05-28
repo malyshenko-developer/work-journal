@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { workLogSchema, type WorkLogFormValues, WorkLogForm } from '@/entities/work-log'
-
 import { workLogsApi } from '@/shared/api/work-logs'
+import type { WorkLog } from '@/shared/api/types'
 import { Button } from '@/shared/ui/button'
 import {
     Dialog,
@@ -15,26 +15,29 @@ import {
     DialogTrigger,
 } from '@/shared/ui/dialog'
 
-export function CreateWorkLogDialog() {
+interface EditWorkLogDialogProps {
+    workLog: WorkLog
+}
+
+export function EditWorkLogDialog({ workLog }: EditWorkLogDialogProps) {
     const [open, setOpen] = useState(false)
     const queryClient = useQueryClient()
 
     const form = useForm<WorkLogFormValues>({
         resolver: zodResolver(workLogSchema),
         defaultValues: {
-            date: '',
-            work_type_id: 0,
-            volume: 0,
-            unit: '',
-            executor: '',
+            date: workLog.date.split('T')[0],
+            work_type_id: workLog.work_type_id,
+            volume: workLog.volume,
+            unit: workLog.unit,
+            executor: workLog.executor,
         },
     })
 
     const { mutate, isPending } = useMutation({
-        mutationFn: workLogsApi.create,
+        mutationFn: (values: WorkLogFormValues) => workLogsApi.update(workLog.id, values),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['work-logs'] })
-            form.reset()
             setOpen(false)
         },
     })
@@ -42,17 +45,20 @@ export function CreateWorkLogDialog() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button>Добавить запись</Button>
+                <Button variant="ghost" size="sm">
+                    Редактировать
+                </Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Новая запись</DialogTitle>
+                    <DialogTitle>Редактировать запись</DialogTitle>
                 </DialogHeader>
                 <WorkLogForm
                     form={form}
                     onSubmit={(values) => mutate(values)}
                     onCancel={() => setOpen(false)}
                     isPending={isPending}
+                    defaultWorkTypeId={workLog.work_type_id}
                 />
             </DialogContent>
         </Dialog>
